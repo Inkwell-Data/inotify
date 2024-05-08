@@ -92,6 +92,7 @@ handle_info(tick, S) ->
                             IsWritten = lists:member(close_write, Mask),
                             IsDir = lists:member(isdir, Mask),
                             Create = lists:member(create, Mask),
+                            Delete = lists:member:(delete, Mask),
 
                             %File written to and changed
                             case {IsDir, IsWritten} of
@@ -100,7 +101,16 @@ handle_info(tick, S) ->
                                     Parent ! {inotify, changed, AbsName1};
                                 _ -> pass
                             end,
+                            
+                            % File deleted
+                            case {IsDir, Delete} of
+                                {false, true} -> 
+                                    AbsName3 = wd_lookup_absname(WdLookup, Wd, Filename),
+                                    Parent ! {inotify, delete, AbsName3};
+                                _ -> pass
+                            end,
 
+                            
                             %New directory created, start monitoring it
                             case {IsDir, Create} of
                                 {true, true} -> 
