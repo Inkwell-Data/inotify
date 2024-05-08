@@ -1,0 +1,10 @@
+{application,inotify,
+             [{description,"Erlang inotify library"},
+              {vsn,"0.1.0"},
+              {registered,[]},
+              {applications,[kernel,stdlib]},
+              {env,[]},
+              {modules,[inotify,inotify_folder_watcher]},
+              {maintainers,[]},
+              {licenses,[]},
+              {links,[]}]}.
